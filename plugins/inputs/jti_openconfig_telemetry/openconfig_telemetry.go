@@ -156,11 +156,7 @@ func (m *OpenConfigTelemetry) extractData(r *telemetry.OpenConfigData, grpcServe
 		case *telemetry.KeyValue_StrValue:
 			// If StrAsTags is set, we treat all string values as tags
 			if m.StrAsTags {
-				data, err := strconv.Atoi(v.GetStrValue())
-				finaltags[xmlpath] = data
-				if err != nil {
-					finaltags[xmlpath] = v.GetStrValue()
-				}
+				inaltags[xmlpath] = v.GetStrValue()
 			} else {
 				data, err := strconv.Atoi(v.GetStrValue())
 				kv[xmlpath] = data
