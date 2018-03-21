@@ -8,6 +8,7 @@ import (
 	"strings"
 	"sync"
 	"time"
+	"strconv"
 
 	"github.com/influxdata/telegraf"
 	"github.com/influxdata/telegraf/internal"
@@ -155,9 +156,17 @@ func (m *OpenConfigTelemetry) extractData(r *telemetry.OpenConfigData, grpcServe
 		case *telemetry.KeyValue_StrValue:
 			// If StrAsTags is set, we treat all string values as tags
 			if m.StrAsTags {
-				finaltags[xmlpath] = v.GetStrValue()
+				data, err := strconv.Atoi(v.GetStrValue())
+				finaltags[xmlpath] = data
+				if err != nil {
+					finaltags[xmlpath] = v.GetStrValue()
+				}
 			} else {
-				kv[xmlpath] = v.GetStrValue()
+				data, err := strconv.Atoi(v.GetStrValue())
+				kv[xmlpath] = data
+				if err != nil {
+					kv[xmlpath] = v.GetStrValue()
+				}
 			}
 			break
 		case *telemetry.KeyValue_DoubleValue:
